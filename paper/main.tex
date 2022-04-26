@@ -1,0 +1,476 @@
+\documentclass[11pt]{amsart}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsthm}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{braket}
+%\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{amssymb}
+
+\usepackage[backend=biber, style=verbose, natbib, sortcites=true]{biblatex}
+\addbibresource{refs.bib}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{prop}[definition]{Proposition}
+\newtheorem{cor}[definition]{Corollary}
+\newtheorem{ex}[definition]{Exercise}
+\newtheorem{example}[definition]{Example}
+\newtheorem*{remark}{Remark}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.fractals}
+\usetikzlibrary{lindenmayersystems}
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\B}{\ensuremath{\mathcal{B}}}
+
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\dimH}{dim_H}
+
+
+
+% Title, Author
+\title{Hausdorff Measure % and Sets of Non-Integer Dimension
+}
+\author{Jack Maloney}
+
+\begin{document}
+
+\maketitle
+
+\section{Motivativation}
+
+\begin{figure}[h]
+	\begin{subfigure}{.3\textwidth}
+	  	\centering
+		\begin{tikzpicture}
+			\draw (0,0) -- ++(-1,1/2) -- cycle;
+		\end{tikzpicture}
+		\caption{A Line}
+	\end{subfigure}
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\draw (0,0,0) -- ++(-1,0,0) -- ++(0,-1,0) -- ++(1,0,0) -- cycle;
+		\end{tikzpicture}
+		\caption{A Square}
+	\end{subfigure}
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\draw (0,0,0) -- ++(-1,0,0) -- ++(0,-1,0) -- ++(1,0,0) -- cycle;
+			\draw (0,0,0) -- ++(0,0,-1) -- ++(0,-1,0) -- ++(0,0,1) -- cycle;
+			\draw (0,0,0) -- ++(-1,0,0) -- ++(0,0,-1) -- ++(1,0,0) -- cycle;
+		\end{tikzpicture}
+		\caption{A Cube}
+	\end{subfigure}
+	\caption{Three Subsets of \(\R^3\)}
+\end{figure}
+
+It can be useful to compare the sizes of lower-dimensional subsets of \( R^n \), but under the d-dimensional Lebesgue measure, all lower-dimensional sets will have measure zero, regardless if they are singletons, curves, or sets of dimension d-1. 
+
+For example, the line and the square both have zero 3-dimensional Lebesgue measure, while the cube has finite, positive measure. If we use a lower dimensional Lebesgue measure, then the square or the line may have a positive measure, but then the cube, and possibly the square, will not have a defined measure.
+
+For sets that are manifolds, as in the examples above, we can use the manifold dimension to compare their sizes. However, we may wish to compare more pathological sets, which are of substantially different shape or size but nonetheless have measure zero under the measure of the whole space.
+
+Here we will outline the theory of the Hausdorff measure and the Hausdorff dimension, and use it to quantify the sizes of lower-dimensional sets of \( \R^d \).
+
+\section{Hausdorff Measure}
+
+We begin with the definition of the Hausdorff measure.
+
+\begin{definition}[Hausdorff Measure]
+	Let  \( p \geq 0 \), \( \delta > 0 \). Then for any \( A \subseteq \R^d \), let
+	\begin{align}
+		H_p^\delta \left( A \right) = 
+		\inf \Set{ \sum_{j = 1}^{\infty} \left( \diam B_j \right)^p 
+		| \Set{B_j} \subseteq \B_{\R^d} , 
+		A \subseteq \bigcup_{j = 1}^{\infty} B_j  , 
+		\diam B_j < \delta } ,
+	\end{align}
+	where \( \B_{\R^d} \) is the Borel \( \sigma \)-algebra.
+	Then the p-dimensional Hausdorff (Outer) Measure of \( A \), \( H_p \left( A \right) = \lim_{\delta \rightarrow 0} H_p^\delta \left( A \right)\).
+\end{definition}
+
+We restrict the covering sets to be Borel sets for the sake of convenience, because they are all Lebesgue measurable, but the result is the same if we allow the \( B_j \)s to be any subset of \( \R^d \).
+
+Note that as \( \delta \rightarrow 0 \), we only remove coverings from the infimum set. So, as \( \delta \rightarrow 0 \), \( H_p^\delta \left( A \right) \) will only increase. Therefore, the limit certainly exists, but may be infinite. 
+
+\begin{ex}[Folland 11.13]\label{ex:11.13}
+	In any metric space, the zero-dimensional Hausdorff measure is the counting measure.
+\end{ex}
+
+\begin{proof}
+%	Begin by noting that \( (\diam B_j)^0 = 1 \), regardless of \( B_j \). So \( H_p^\delta (A) \) is the infimum over the cardinalities of valid covers. 
+%	
+	First we will show \( H_0(A) \leq \#(A) \). If \( \#(A) = \infty \), we are done, because \( H_0(A) \) cannot exceed \( \infty \). Otherwise, for any \( \delta > 0 \), cover each element of \( A \) with a \( \delta \)-ball.  The corresponding sum in the infimum set defining \( H_0^\delta (A) \) will be \( \#(A)\). Thus, \( H_0^\delta (A) \leq \#(A) \) for all \( \delta > 0 \), so \( H_0(A) \leq \#(A) \).
+
+	To prove the reverse inequality let 
+	\begin{align}
+		\epsilon = \inf \Set{ d(x, y) | x, y \in A } .
+	\end{align}
+	
+	If \( \epsilon > 0\), then \( A \) cannot be covered by any less than \( \# (A) \) sets, because no covering set of radius \( \delta < \epsilon \) can include more than one point of \( A \). Therefore \( H_0^\delta(A) \geq \#(A) \) for all \( \delta < \epsilon \). 
+	
+	If \( \epsilon = 0 \), then \( \#(A) = \infty \). Fix \( M \in \N \). Pick a sequence of \( M \) distinct points \( \Set{p_j}_{j = 1}^{M} \subseteq A \), and let  
+	\begin{align}
+			\alpha = \min \Set{ d(p_i, p_j) | i \neq j }.
+	\end{align}
+	Then no a cover of \( A \) of sets with diameter less than \( \delta  < \frac{\alpha}{2} \) can have less than \(M\) elements. If it did, then it could not possibly cover every \( p_j \in A \), because the radius of such a set must be less than \( \alpha \). Because such a \( \delta > 0\) can be found for each \( M \in \N \), it must be that \( H_0 (A) = \infty = \#(A) \). 
+\end{proof}
+
+%\begin{ex}[Folland 11.11]
+%	
+%\end{ex}
+
+%By Proposition 1.10, the Hausdorff measure is an outer measure, and so its restriction to the 
+
+\begin{prop}
+	\(H_p\) is a metric outer measure, that is
+	\begin{align}
+		 H_p(A \cup B) = H_p(A) + H_p(B)
+		 \quad \text{ whenever } d(A, B) > 0 .
+	\end{align}
+\end{prop}
+
+\begin{proof}
+	\(H_p^\delta\) is an outer measure by Proposition 1.10 in Folland. In the limit as \( \delta \rightarrow 0 \) it continues to satisfy the properties of an outer measure, so \( H_p \) is an outer measure. 
+	
+	Now suppose \( d(A, B) > 0\) and \( \Set{C_j} \) is a covering of \( A \cup B \) such that \(\diam C_j < \delta < d(A, B) \). Thus no \( C_j \) can intersect both \(A\) and \(B\). So \( \Set{A_j} = \Set{C_j | C_j \cap A \neq \emptyset } \) and \( \Set{B_j} = \Set{C_j | C_j \cap B \neq \emptyset } \) are disjoint sequences. Then 
+	\begin{align}
+		H_p^\delta(A) + H_p^\delta(B) 
+		\leq \sum_{j = 0}^\infty (\diam A_j)^p + \sum_{j = 0}^\infty (\diam B_j)^p
+		\leq \sum_{j = 0}^\infty (\diam C_j)^p .
+	\end{align}
+	Because this is true for any covering \( \Set{C_j} \), we have that \(H_p^\delta(A) + H_p^\delta(B) \leq H_p^\delta(A \cup B) \). Letting \( \delta \rightarrow 0 \), we get that \( H_p(A) + H_p(B) \leq H_p(A \cup B) \). Sub-additivity proves the reverse inequality, so we are done.
+\end{proof}
+
+\begin{prop}\label{prop:borels}
+	Borel sets are measurable by \( H_p\) (or any metric outer measure).
+\end{prop}
+
+\begin{proof}[Proof Sketch]
+	For any set \(A\) and any closed set \(F\), \(A \setminus F\) can be successively approximated by an increasing sequence of open sets \( \Set{B_j} \), such that \( D(F, B_j) > 0 \) for each j.
+	The preceding proposition holds for each \(\Set{B_j}\), so passing to the limit we get that \( H_p(A) = H_p(A \cap F) + H_p(A \setminus F) \). Thus, \( F \) satisfies the Carathéodory condition, and so is measurable. 
+	Because closed sets generate the Borel \(\sigma\)-algebra, every Borel set is measurable. 
+\end{proof}
+
+\begin{cor}\label{prop:borels:cor}
+	\( \left. \vphantom{\big|} H_p \right|_ {\B_{\R^d}}\) is a measure. 
+\end{cor}
+
+The Hausdorff measure has the interesting property that for any given set it is only non-zero and finite for a single value of \(p\), as shown by the next proposition.
+
+\begin{prop} \label{prop:critval}
+	If \( H_p \left( A \right) < \infty \), then \( H_q \left( A \right) = 0 \) for all \( q > p \).
+\end{prop}
+
+\begin{proof}
+	Since \( H_p \left( A \right) < \infty \), for any \( 1 > \delta > 0 \) there exists \( \Set{B_j}_0^\infty \), a covering of \(A\) such that \( \diam B_j < \delta \), and \( \sum_{j = 1}^{\infty} \left( \diam B_j \right)^p < H_p \left( A \right) + 1 \). So for any \( q > p \), we have that 
+	\begin{align}
+		H^\delta_q \left( A \right) 
+		& \leq \sum_{j = 1}^{\infty} \left( \diam B_j \right)^q \\
+		& = \sum_{j = 1}^{\infty} \left( \diam B_j \right)^{q - p} \left( \diam B_j \right)^{p} \\
+		& < \delta^{q - p} \sum_{j = 1}^{\infty} \left( \diam B_j \right)^{p} \\
+		& < \delta^{q - p} \left( H_p  \left( A \right) + 1 \right)
+	\end{align}
+	
+	Thus, letting \( \delta \rightarrow 0 \), we have that \( H_q \left( A \right) = 0 \).
+\end{proof}
+	
+\begin{cor} \label{prop:critval:cor}
+	If \( H_p \left( A \right) > 0 \), then \( H_q \left( A \right) = \infty \) for all \( q < p \).
+\end{cor}
+
+Taken together these imply that the Hausdorff measure of a set is infinite for all dimensions \( p \) up to a critical value, and then above that critical value, it is zero. We call that critical value the Hausdorff dimension.
+
+\begin{definition}[Hausdorff Dimension]
+	The Hausdorff dimension of a set \( A \subseteq X \), 
+	\begin{align}
+		\dimH (A) 
+		= \inf \Set{ p \geq 0 | H_p(A) = 0 }
+		= \sup \Set{ p \geq 0 | H_p(A) = \infty }.
+	\end{align}
+	These values are equal by Proposition \ref{prop:critval} and Corollary \ref{prop:critval:cor}.
+\end{definition}
+
+\begin{ex}
+	If \( A_m \) is a subset of a metric space \( X \) of Hausdorff dimension \( p_m \), then \( \bigcup_{m = 0}^\infty A_m \) has Hausdorff dimension \( \sup_{m} p_m\).
+\end{ex}
+
+\begin{proof}
+	For \( p > \sup_{m} p_m \), 
+	\begin{align}
+		 H_p \left( \bigcup_{m = 0}^\infty A_m \right) 
+		 \leq \sum_{m = 0}^\infty H_p(A_m)
+		 = 0 .
+	\end{align}
+	So \( \dimH(\bigcup_{m = 0}^\infty A_m) = \inf \Set{p \geq 0 | H_p(\bigcup_{m = 0}^\infty A_m) = 0} \leq \sup_{m} p_m \).
+	
+	For \( p < \sup_{m} p_m \), there exists \( A_k \) with \( p_k > p\). Therefore,
+	\begin{align}
+		\infty
+		= H_p(A_k)
+		\leq H_p \left( \bigcup_{m = 0}^\infty A_m \right) .
+	\end{align}
+	Thus, \( \dimH(\bigcup_{m = 0}^\infty A_m) = \sup \Set{p \geq 0 | H_p\left(\bigcup_{m = 0}^\infty A_m\right) = \infty} \geq \sup_{m} p_m \).
+\end{proof}
+
+\begin{ex}[Folland 11.10]\label{ex:cube}
+	Let \( Q \) be a d-dimensional cube in \( \R^d \), then \( 0 < H_d \left( Q \right) < \infty \).
+\end{ex}
+
+\begin{proof}
+	First we show \( H_d \left( Q \right) < \infty \). Let \( Q \) be a cube of side length \( a > 0 \) and fix \( k \in \N \). Then \( Q \) is the union of \( k^d \) cubes of diameter \( \frac{a \sqrt{d}}{k} \). So for any \( \delta > 0 \), pick \( k \) such that \( \frac{a \sqrt{d}}{k} < \delta \). Then
+	\begin{align}
+		H^\delta_d(Q) \leq k^d \left( \frac{a \sqrt{d}}{k} \right)^d = a^d d^{\frac{d}{2}}
+	\end{align}
+	for all \( \delta \), and so \( H_d \left( Q \right) < \infty \).
+	
+	Next we show that \( 0 < H_d \left( Q \right) \). Take \( l_d \) to be the d-dimensional Lebesgue measure, and let \( C \) be the \( l_d \)-measure of the unit ball. Then any set \( E \subseteq \R^d \) is enclosed in a ball of radius \( \diam E \), and so will have measure 
+	\begin{align}
+		l_d(E) \leq C ( \diam E )^d .
+	\end{align}
+	
+	Now let \( \Set{B_j}_0^\infty \) be a cover of \( Q \). Then 
+	\begin{align}
+		0 < \frac{a^d}{C} = \frac{l_d(Q)}{C} \leq \frac{1}{C} \sum_{j = 0}^\infty l_d(B_j) \leq \sum_{j = 0}^\infty (\diam B_j)^d .
+	\end{align}
+	Since this holds for any cover, it must be that \( 0 < H_d \left( Q \right) \).
+\end{proof}
+
+We can now prove a more general relationship between the Lebesgue measure and the Hausdorff measure.
+
+\begin{prop}
+	There exists a constant \( \gamma_d > 0 \) such that \( \gamma_d H_d = l_d \), the d-dimensional Lebesgue measure on \( \R^d \).
+\end{prop}
+
+\begin{proof}
+	It follows from Exercise \ref{ex:cube} that \( H_d \) is finite on compact sets, because we can cover any compact set in \( \R^d \) by a sufficiently large cube.
+	We then achieve the result from Theorem 11.9 through some integral manipulation via Fubini's theorem.
+\end{proof}
+
+\section{Self-Similar Sets and Hausdorff Dimension}
+
+We will now apply the theory of Hausdorff dimension to quantify some interesting subsets of \( \R^d \), namely self-similar fractals. 
+
+\begin{definition}
+	A \textbf{similitude} of scaling factor \( r \) is a map \( S: \R^d \rightarrow \R^d \) such that \( x \mapsto rO(x) + b \), where \( O \) is an orthogonal map on \( \R^d \) and \( b \in \R^d \).
+\end{definition}
+
+If \( S = \Set{S_1, ..., S_m} \) are a finite family of similitudes with a common scaling factor \( r < 1 \), and \(E \subseteq \R^n\), define
+\begin{align}
+	S^0(E) & = E, \\
+	 \quad S^1(E) & = \bigcup_{j = 1}^{m} S_j(E), \\
+	 \text{and } \quad S^k(E) & = S^1(S^{k-1}(E)) \text{ for } k > 1 .
+\end{align}
+
+\( E \) is said to be \textbf{invariant under \( S \)} if \( S(E) = E \).
+
+\subsection{Examples of Self-Similar Sets}
+
+% Fractal Figure
+\begin{figure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\begin{tikzpicture}[decoration=Cantor set,line width=3mm]
+	  		\draw (0,0) -- (3,0);
+	  		\draw decorate{ (0,-.5) -- (3,-.5) };
+	  		\draw decorate{ decorate{ (0,-1) -- (3,-1) }};
+	  		\draw decorate{ decorate{ decorate{ (0,-1.5) -- (3,-1.5) }}};
+	  		\draw decorate{ decorate{ decorate{ decorate{ (0,-2) -- (3,-2) }}}};
+		\end{tikzpicture}
+		\caption{The first five iterations of the Cantor set.}
+		\label{fig:fractals:cantor}
+	\end{subfigure}
+	\begin{subfigure}{.45\textwidth}
+		\centering
+		\begin{tikzpicture}[decoration=Koch snowflake]
+			\draw decorate{ (0,0) -- (3,0) };
+     		\draw decorate{ decorate{ (0,-1.2) -- (3,-1.2) }};
+     		\draw  decorate{ decorate{ decorate{ (0,-2.4) -- (3,-2.4) }} };
+		\end{tikzpicture}
+%		\vspace{2.em}
+		\caption{The first three iterations of the Koch snowflake.}
+		\label{fig:fractals:koch}
+	\end{subfigure}
+	
+	\vspace{1.2em}
+	
+	\begin{subfigure}{.9\textwidth}
+		\centering
+		\def\trianglewidth{2cm}%
+		\pgfdeclarelindenmayersystem{Sierpinski triangle}{
+		    \symbol{X}{\pgflsystemdrawforward}
+		    \symbol{Y}{\pgflsystemdrawforward}
+		    \rule{X -> X-Y+X+Y-X}
+		    \rule{Y -> YY}
+		}%
+		\foreach \level in {0,...,4}{%
+			\tikzset{
+			    l-system={step=\trianglewidth/(2^\level), order=\level, angle=-120}
+			}%
+			\begin{tikzpicture}
+			    \fill [black] (0,0) -- ++(0:\trianglewidth) -- ++(120:\trianglewidth) -- cycle;
+			    \draw [draw=none] (0,0) l-system
+			    [l-system={Sierpinski triangle, axiom=X},fill=white];
+			\end{tikzpicture}
+		}%
+		\caption{The first five iterations of the Sierpiński gasket.}
+		\label{fig:fractals:sierpinski}
+	\end{subfigure}
+
+	\caption{Some self-similar fractal sets.}
+	\label{fig:fractals}
+\end{figure}
+
+\begin{example}[Cantor Set]
+	\begin{align}
+		S_1(x) = \frac{1}{3}x, 
+		\quad S_2(x) = \frac{1}{3}x + \frac{2}{3}, 
+		\quad S = \Set{S_1, S_2}.
+	\end{align}
+	Then \(C = \bigcap_{n = 0}^\infty S^n([0,1]) \), is the Cantor set. It is invariant under \(S\), and each half created by \(S_1\) and \(S_2\) are disjoint, so it is a self-similar. See figure \ref{fig:fractals:cantor} for an illustration.
+\end{example}
+
+\begin{example}[Koch Snowflake]
+	Let \( L \) be the piecewise line in \( \R^2 \) connecting \( (0,0) \) to \( (\frac{1}{3}, 0) \) to \( (\frac{1}{2}, \frac{1}{6}\sqrt{3}) \) to \( (1,0) \), as shown in the first iteration of the illustration in Figure \ref{fig:fractals:koch}. Let \( S = \Set{S_1, S_2, S_3, S_4} \), where
+	\begin{align}
+		S_1(x) & = \frac{1}{3}x,
+		& S_2(x) & = \frac{1}{3}\textbf{R}_{\frac{\pi}{3}}x + \left( \frac{1}{3}, 0 \right), \\
+		S_3(x) & = \frac{1}{3}\textbf{R}_{-\frac{\pi}{3}}x + \left( \frac{1}{2}, \frac{1}{6} \sqrt{3} \right),
+		& S_4(x) & = \frac{1}{3}x + \left( \frac{2}{3}, 0 \right) .
+	\end{align}
+	and \( \textbf{R}_\theta \) is a rotation through angle \( \theta \). 
+	
+	\( \Sigma = \lim_{n \rightarrow \infty} S^n(L) \) is \( \frac{1}{3} \) of the \textit{Koch Snowflake}. The full snowflake is generated by arranging 3 copies of \(\Sigma\) into a "triangle" such that the pieces form a closed loop. See figure \ref{fig:fractals:koch} for an illustration. The full triangle is not illustrated for brevity.
+\end{example}
+
+\begin{example}[Sierpiński Gasket]
+		Let \( \Delta \) be the triangular region enclosed by \((0,0)\) \((\frac{1}{2}, 1)\), and \((0, 1)\), and \( S = \Set{S_1, S_2, S_3} \) where
+	\begin{align}
+		S_j(x) = \frac{1}{2} x + b_j \quad \text{ for } b_j \in \Set{\left( 0, 0 \right), \left( \frac{1}{2}, 0 \right), \left(\frac{1}{4}, \frac{1}{2}\right)} .
+	\end{align}
+	The Sierpiński Gasket \( \Gamma = \bigcap_{n = 0}^{\infty} S^n(\Delta) \). 
+	See figure \ref{fig:fractals:sierpinski} for an illustration.
+\end{example}
+
+% All three of these examples are invariant under their generating similitudes. 
+
+We now introduce a technical condition which will be a prerequisite for an important theorem regarding self-similar sets.
+
+\begin{definition}
+	A \textit{Separating Set} for a family of similitudes \( S \) is a nonempty bounded open set \(U\) such that
+	\begin{align}
+		S(U) \subset U,
+		\quad S_i(U) \cap S_j(U) = \emptyset \text{ if } i \neq j .
+	\end{align}
+\end{definition}
+
+The three preceding examples of self-similar sets all admit a separating set. For  the Cantor set, take \( U = (0,1) \). For the Koch curve, take the convex hull of the initial curve, namely the triangle bounded by \( \left( 0,0 \right)\), \(\left( \frac{1}{2}, \frac{1}{6}\sqrt{3} \right) \), and \( \left( 1,0 \right) \). 
+
+\begin{prop}
+	Let \( S \) be a family of similitudes with scaling factor \( r < 1 \), which admits a separating set \( U \). Then there is a unique nonempty compact set that is invariant under \(S\), namely \( \bigcap_{k = 0}^{\infty} S^k(\overline{U}) \).
+\end{prop}
+
+\begin{proof}[Proof Idea]
+	The argument has a similar flavor to the contraction mapping theorem. Because each iteration of the map shrinks the distances between points, repeated iterations converge to a stable "fixed point" set and there cannot be two distinct sets that are invariant, they will eventually converge.
+\end{proof}
+
+\begin{theorem}
+	Suppose \( S = \Set{S_1, ..., S_m} \) is a family of similitudes with scaling factor \( r < 1 \) that admits a separaitng set \( U \), let \( X \) be the unique nonempty compact set that is invariant under \( S \). Then \(X\) has Hausdorff dimension \( p = \log_{\frac{1}{r}} m \).
+\end{theorem}
+
+\begin{proof}[Proof Idea]
+	To show that \( H_p(X) < \infty \), we cover \(X\) by finitely many smaller copies of itself, given to us by repeated application of \(S\). These can be made sufficiently small such that they sit in the infimum set of \(H_p(X)\) for any \(\delta > 0\), and yet the sum of their diameters to the power \(p\) is exactly \((\diam X)^p\), due to the definition of \(p\). Therefore \(H_p(X)\) is finite.
+	
+	To show that \( 0 < H_p(X) \), first pick \( c > 0 \) such that \(U\) contains a ball of radius \(\frac{c}{r}\) and \( C > 0 \) such that \(U\) is contained inside a ball of radius \(C\). Then let \( N = (1 + 2C)^d c^{-d} \), where \( d \) is the dimension of the ambient space \(X \subseteq \R^d\).
+	We show that if \(\Set{B_j}\) is any covering of \(X\) by sets of diameter less than \(1\), then \( \sum (\diam B_j) \geq \frac{1}{N} \). 
+	
+	This result is derived from a lemma which bounds the number of disjoint sets, that themselves are bounded both from inside and outside, a set of radius \(\delta\) can intersect, thus bounding the best possible covering of \(X\) from below, which gives us the desired result on the infimum of coverings.
+\end{proof}
+
+\begin{cor}
+	The Cantor set, the Koch curve, and the Sierpiński gasket have Hausdorff dimension \( \log_3 2\), \( \log_3 4\), and \( \log_2 3 \), respectively.
+\end{cor}
+
+%\begin{ex}[Folland 11.16]
+%	Modify the construction of the snowflake curve by using isosceles triangles rather than equilateral ones. That is, given \(\frac{1}{4} < \beta < \frac{1}{2} \), let \(L\) be the broken line connecting \( (0, 0) \) to \( (\beta, 0) \) to \( \frac{1}{2} \left( 1, \sqrt{4\beta - 1} \right) \) to \( (1 - \beta, 0) \) to \( (1, 0) \). Proceeding inductively, let \( L_k \) be the figure obtained by replacing each line segment in \( L_{k-1} \) by a copy of \(L\), scaled down by a factor of \(\beta^k\), and let \( \Sigma_\beta \) be the limiting set. (Thus \( \Sigma_{\frac{1}{3}} \) is the ordinary snowflake curve.) Find the family of similitudes under which \( \Sigma_\beta \) is invariant, show that it possesses a separating set, and find the Hausdorff dimension of \( \Sigma_\beta \).
+%\end{ex}
+%
+%\begin{proof}[Solution]
+%	The similitudes are
+%	\begin{align}
+%		S_1(x) & = \beta x,
+%		& S_2(x) & = \beta \textbf{R}_{\beta \pi} \left( x \right) + \left( \beta, 0 \right), \\
+%		S_3(x) & = \beta \textbf{R}_{-\beta \pi} \left( x \right) + \frac{1}{2} \left( 1, \sqrt{4\beta - 1} \right),
+%		& S_4(x) & = \beta x + \left( 1 - \beta, 0 \right) .
+%	\end{align}
+%	
+%	
+%\end{proof}
+
+%\begin{ex}
+%	
+%\end{ex}
+
+
+\begin{ex}[Folland 11.18]
+	Given \( n \in \N \) and \( p \in (0, n) \), construct borel sets \( E_1, E_2, E_3 \subseteq \R^n \) with the following properties
+	\begin{enumerate}
+		\item \( 0 < H_p(E_1) < \infty \).
+		\item \( H_p(E_2) = \infty \).
+		\item \( H_p(E_3) = 0\).
+	\end{enumerate}
+\end{ex}
+
+\begin{proof}[Solution]
+	\begin{enumerate}
+		\item For \( p \in \N \), just take a \(p\)-dimensional cube. 
+		For \( p \in (0, 1)\), adjust the definition of the Cantor set to remove the middle \((1 - 2\beta)\)-ths of the interval, for \( \beta \in \left( 0, \frac{1}{2} \right)\). Then the dimension of the Cantor set is \( \log_{\frac{1}{\beta}}(2) \), so pick \( \beta = \frac{1}{\sqrt[p]{2}}\).
+		For \( p > 1\), things are more difficult. There is a theorem \footcite{hatano_1971} not in Folland's book which states that for \( A \subseteq \R^n \), \( B \subseteq \R^m \), \(\dimH (A) + \dimH(B) \leq \dimH( A \times B) \leq \min \Set{ n + \dimH(B), m + \dimH(A) }\). 
+		
+		For \(p>1\), let \( \gamma \) be the fractional part of \(p\), and let \(m\) be the integer part of \(p\).
+		
+		Let \(C \subseteq \R \) be a Cantor set with dimension \( \gamma \), as constructed above, and let \( I = [0,1]^m \subseteq \R^m \). Then
+		\begin{align}
+			p = \gamma + m & = \dimH(C) + \dimH(I) \\
+			& \leq \dimH(C \times I) \\
+			& \leq \min \Set{ 1 + \dimH(I), m + \dimH(C) } \\
+			& = \min \Set{ 1 + m, m + \gamma } \\
+			& = m + \gamma = p
+		\end{align}
+		Thus, \( \dimH(C \times I) = p\).
+		\item Any n-dimensional cube \( Q \subseteq \R^n\) will have Hausdorff dimension \(n\) by Exercise \ref{ex:cube}, and so for any \( p < n \), \(H_p(Q) = \infty\).
+		\item Any finite set has Hausdorff dimension zero, because by Exercise \ref{ex:11.13} the zero dimensional Hausdorff measure is the counting measure, so for any \(p>0\), \(H_p(E_3) = 0\) if \(E_3\) is any finite set, for example the singleton containing zero.
+	\end{enumerate}
+	
+	
+\end{proof}
+
+\medskip
+
+%\printbibliography
+
+%To cover:
+%- Dimension of these fractal sets (i.e. Corrolary 11.34)
+%- Exercises on these sets like 16 and 17
+%- Separating Set (Learn what this is intuitively)
+%
+%
+%\newpage
+%Some good links
+%\begin{enumerate}
+%	\item \href{https://youtu.be/iH_uLBPSf_w}{1}
+%	\item \href{https://math.stackexchange.com/questions/2586056/why-does-hausdorff-measure-go-to-zero-as-diameter-power-increases}{SO prop}
+%	\item \href{https://math.stackexchange.com/questions/246541/show-that-the-n-dimensional-hausdorff-measure-of-an-n-dimensional-cube-is-posi}{11.10}
+%\end{enumerate}
+
+
+\end{document}
