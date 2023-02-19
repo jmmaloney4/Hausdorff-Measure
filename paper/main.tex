@@ -2,13 +2,15 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{fontspec}
 \usepackage{amsthm}
 \usepackage{hyperref}
 \usepackage{subcaption}
 \usepackage{braket}
-%\usepackage{amsfonts}
+\usepackage{amsfonts}
 \usepackage{mathrsfs}
 \usepackage{amssymb}
+\usepackage{csquotes}
 
 \usepackage[backend=biber, style=verbose, natbib, sortcites=true]{biblatex}
 \addbibresource{refs.bib}
@@ -32,8 +34,6 @@
 
 \DeclareMathOperator{\diam}{diam}
 \DeclareMathOperator{\dimH}{dim_H}
-
-
 
 % Title, Author
 \title{Hausdorff Measure % and Sets of Non-Integer Dimension
@@ -165,7 +165,7 @@ Note that as \( \delta \rightarrow 0 \), we only remove coverings from the infim
 	\( \left. \vphantom{\big|} H_p \right|_ {\B_{\R^d}}\) is a measure. 
 \end{cor}
 
-The Hausdorff measure has the interesting property that for any given set it is only non-zero and finite for a single value of \(p\), as shown by the next proposition.
+The Hausdorff measure has the interesting property that for any given set it is only non-zero and finite for at most a single value of \(p\), as shown by the next proposition.
 
 \begin{prop} \label{prop:critval}
 	If \( H_p \left( A \right) < \infty \), then \( H_q \left( A \right) = 0 \) for all \( q > p \).
