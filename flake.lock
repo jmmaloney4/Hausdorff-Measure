@@ -25,11 +25,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1677398887,
-        "narHash": "sha256-wRSjMtHs4j/ITAwlME4IlpKMzreDQ1TxMTVi510P2bU=",
+        "lastModified": 1677399938,
+        "narHash": "sha256-U2gBOqKoW3sUxXXncqkow4qQSnJFQFoVmn3sGkiW1uk=",
         "owner": "jmmaloney4",
         "repo": "latex-utils",
-        "rev": "be3b1d782eb92f76c1e577a023770084ed4bde8e",
+        "rev": "eba78948a2d2db881298dfbf74f02a77a29297b9",
         "type": "github"
       },
       "original": {
