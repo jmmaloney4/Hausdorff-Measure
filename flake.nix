@@ -3,7 +3,8 @@
     nixpkgs.url = github:NixOS/nixpkgs/nixos-21.05;
     flake-utils.url = github:numtide/flake-utils;
     latex-utils = {
-      url = "git+file:///Users/jack/Developer/github.com/jmmaloney4/latex-utils";
+      # url = "git+file:///Users/jack/Developer/github.com/jmmaloney4/latex-utils";
+      url = "github:jmmaloney4/latex-utils";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
