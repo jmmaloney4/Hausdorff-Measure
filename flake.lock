@@ -25,14 +25,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1677387880,
-        "narHash": "sha256-lM3UYzYn/lPLLZYrp7jKcM5oPbd8y/gqorIvrPvW690=",
-        "type": "git",
-        "url": "file:///Users/jack/Developer/github.com/jmmaloney4/latex-utils"
+        "lastModified": 1677398348,
+        "narHash": "sha256-2r1Z+BWsJlRfkivRciXoXvLBTpBXRnBpwXaQ0H3vWPo=",
+        "owner": "jmmaloney4",
+        "repo": "latex-utils",
+        "rev": "4abda6ffd766ccb74a22ed6fd18525160f6dd79a",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///Users/jack/Developer/github.com/jmmaloney4/latex-utils"
+        "owner": "jmmaloney4",
+        "repo": "latex-utils",
+        "type": "github"
       }
     },
     "nixpkgs": {
