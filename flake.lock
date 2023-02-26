@@ -15,6 +15,26 @@
         "type": "github"
       }
     },
+    "latex-utils": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1677387880,
+        "narHash": "sha256-lM3UYzYn/lPLLZYrp7jKcM5oPbd8y/gqorIvrPvW690=",
+        "type": "git",
+        "url": "file:///Users/jack/Developer/github.com/jmmaloney4/latex-utils"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///Users/jack/Developer/github.com/jmmaloney4/latex-utils"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1659914493,
@@ -34,6 +54,7 @@
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
+        "latex-utils": "latex-utils",
         "nixpkgs": "nixpkgs"
       }
     }
