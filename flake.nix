@@ -44,7 +44,7 @@
 
     in {
       packages.default = latex-utils.lib.${system}.mkLatexDocument {
-        name = "hausdorff-measure";
+        name = "math629-hausdorff-measure";
         src = self;
         inherit texPackages;
         workingDirectory = "paper";
